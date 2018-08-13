@@ -35,6 +35,7 @@ trackers = cv2.MultiTracker_create()
 # If a video path was not supplied, grab the reference to the web cam
 if not args.get("video", False):						# get(#KEY, #DEFAULT_RETURNING_VALUE)
 	print("[INFO] starting video stream...")
+	# activate webcam
 	vs = VideoStream(src=0).start()
 	time.sleep(1.0)
 
