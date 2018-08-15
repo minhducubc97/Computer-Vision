@@ -47,8 +47,8 @@ def four_point_transform(image, pts):
     # create the destination points (order: top-left, top-right, bottom-right and bottom-left) to obtain a front view of the image
     dst = np.array(
         [[0,0],
-        [maxWidth - 1, 0]
-        [maxWidth - 1, maxHeight - 1]
+        [maxWidth - 1, 0],
+        [maxWidth - 1, maxHeight - 1],
         [0, maxHeight - 1]],
         dtype = "float32")
 
