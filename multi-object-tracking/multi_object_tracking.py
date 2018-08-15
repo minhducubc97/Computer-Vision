@@ -3,8 +3,8 @@
 
 # Import the necessary packages
 from imutils.video import VideoStream
-import argparse
-import imutils
+import argparse # parse arguments
+import imutils # a module specificly used to resize, rotate and crop images
 import time
 import cv2
 

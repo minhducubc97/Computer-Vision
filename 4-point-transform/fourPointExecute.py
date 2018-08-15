@@ -2,7 +2,7 @@
 # import the helper function from the file
 from fourPointTransform import four_point_transform
 import numpy as np
-import argparse
+import argparse # parse arguments
 import cv2
 
 # construct the argument parse and parse the argumnents
