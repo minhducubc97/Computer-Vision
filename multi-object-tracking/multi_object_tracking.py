@@ -34,7 +34,7 @@ trackers = cv2.MultiTracker_create()
 
 # If a video path was not supplied, grab the reference to the web cam
 if not args.get("video", False):						# get(#KEY, #DEFAULT_RETURNING_VALUE)
-	print("[INFO] starting video stream...")
+	print("[INFO]: Starting webcam...")
 	# activate webcam
 	vs = VideoStream(src=0).start()
 	time.sleep(1.0)
@@ -61,7 +61,7 @@ while True:
 	# object that is being tracked
 	(success, boxes) = trackers.update(frame)
 
-	# loop over the bounding boxes and draw then on the frame
+	# loop over the bounding boxes and update drawing them then on the frame
 	for box in boxes:
 		(x, y, w, h) = [int(v) for v in box]
 		cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 255, 0), 2)
@@ -76,7 +76,7 @@ while True:
 		# select the bounding box of the object we want to track (make
 		# sure you press ENTER or SPACE after selecting the ROI)
 		box = cv2.selectROI("Frame", frame, fromCenter=False,
-			showCrosshair=True)
+			showCrosshair=True) 
 
 		# create a new object tracker for the bounding box and add it
 		# to our multi-object tracker
