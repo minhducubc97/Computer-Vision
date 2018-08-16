@@ -12,3 +12,7 @@ ap.add_argument("-i", "--image", required="True", help = "path to the input imag
 args = vars(ap.parse_args())
 
 # load the image, clone it and resize appropriately
+image = cv2.imread(args["image"])
+ratio = image.shape[0] / 500.0 # image.shape return (rows, columns, channels)
+cloneImage = image.copy()
+image = imutils.resize(cloneImage, height = 500)
