@@ -1,6 +1,10 @@
+################################## COMMON SETUP ################################
+
 # import the necessary packages
 import numpy as np
 import cv2
+
+#################################### HELPERS ####################################
 
 # INPUT: pts, a list of four points along with their corresponding (x,y) coordinates of the target rectangle
 # OUTPUT: a 2D array

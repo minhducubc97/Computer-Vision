@@ -1,6 +1,8 @@
 # USAGE
 # python multi_object_tracking.py --video videos/#filename.extension --tracker #typeoftracker
 
+################################## COMMON SETUP ################################
+
 # Import the necessary packages
 from imutils.video import VideoStream
 import argparse # parse arguments
@@ -8,11 +10,15 @@ import imutils # a module specificly used to resize, rotate and crop images
 import time
 import cv2
 
+#################################### ARGUMENT ###################################
+
 # Construct the argument parser and parse the arguments
 ap = argparse.ArgumentParser() 	# Specially designed for command line string
 ap.add_argument("-v", "--video", type=str, help="path to input video file")
 ap.add_argument("-t", "--tracker", type=str, default="kcf", help="OpenCV object tracker type") # Set Kcf to be the default tracking algorithm
 args = vars(ap.parse_args())	# vars() return a dictionary, which means args is a dictionary
+
+################################## MAIN ######################################
 
 # Initialize a dictionary that maps strings to their corresponding OpenCV object tracker implementations
 OPENCV_OBJECT_TRACKERS = {
