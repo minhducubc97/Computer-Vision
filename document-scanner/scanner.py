@@ -80,11 +80,13 @@ cv2.imshow("Original image", imutils.resize(cloneImage2, height = 650))
 cv2.imshow("Scanned image", imutils.resize(warpedImage, height = 650))
 cv2.waitKey(0)
 cv2.destroyAllWindows()
-cv2.imwrite("./images/outputImage2" + ".jpg", warpedImage)
+
+outputImageDir = "./images/output" + args["image"][7:]
+cv2.imwrite(outputImageDir, warpedImage)
 
 ######################### STEP 4: Generate Pdf #########################
-# set directory
-# pdfFile = FPDF()
-# pdfFile.add_page()
-# pdfFile.image(str(warpedImage), 0, 0)
-# pdfFile.output("/pdf/document.pdf", "F")
+outputPDFDir = "./pdf/output" + (args["image"][7:]).replace(".jpg", ".pdf")
+pdf = FPDF('P', 'mm', 'A4')
+pdf.add_page()
+pdf.image(outputImageDir, 0, 0, 210, 297) # Size of A4 is 210mm x 297mm
+pdf.output(outputPDFDir, "F")
