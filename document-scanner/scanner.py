@@ -7,6 +7,7 @@ import numpy as np
 import argparse # parse arguments
 import cv2
 import imutils # a module specificly used to resize, rotate and crop images
+from fpdf import FPDF
 
 #################################### ARGUMENT ##################################
 
@@ -78,3 +79,12 @@ warpedImage = (warpedImage > T).astype("uint8") * 255
 cv2.imshow("Original image", imutils.resize(cloneImage2, height = 650))
 cv2.imshow("Scanned image", imutils.resize(warpedImage, height = 650))
 cv2.waitKey(0)
+cv2.destroyAllWindows()
+cv2.imwrite("./images/outputImage2" + ".jpg", warpedImage)
+
+######################### STEP 4: Generate Pdf #########################
+# set directory
+# pdfFile = FPDF()
+# pdfFile.add_page()
+# pdfFile.image(str(warpedImage), 0, 0)
+# pdfFile.output("/pdf/document.pdf", "F")
