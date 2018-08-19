@@ -15,8 +15,6 @@ ap.add_argument("-i", "--image", required=True, help="path to input image")
 ap.add_argument("-p", "--preprocess", type=str, default="thresh", help="type of preprocessing to be done") # either thresh (threshold) or blur
 args = vars(ap.parse_args())
 
-#################################### STEP 1: PROCESS IMAGE ##################################
-
 # read image
 image = cv2.imread(args["image"])
 grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -52,3 +50,5 @@ cv2.waitKey(0)
 # save the output
 outputImageDir = "./images/output" + args["image"][7:]
 cv2.imwrite(outputImageDir, grayImage)
+
+# NOTE: for example_01.png, it is better to use thresh (by default) because it gets rid of the noise completely, while for example_02.png, it is better to use blur since it can read the text correctly
