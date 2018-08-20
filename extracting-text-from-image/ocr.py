@@ -15,6 +15,8 @@ ap.add_argument("-i", "--image", required=True, help="path to input image")
 ap.add_argument("-p", "--preprocess", type=str, default="thresh", help="type of preprocessing to be done") # either thresh (threshold) or blur
 args = vars(ap.parse_args())
 
+###################################### MAIN #####################################
+
 # read image
 image = cv2.imread(args["image"])
 grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
