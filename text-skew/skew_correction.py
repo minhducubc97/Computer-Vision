@@ -57,3 +57,7 @@ print("[INFO] Angle: {:.2f}".format(angle))
 cv2.imshow("Original image", image)
 cv2.imshow("Deskewed image", rotatedImage)
 cv2.waitKey(0)
+
+# write the output image
+outputImageDir = "./images/output" + args["image"][7:]
+cv2.imwrite(outputImageDir, rotatedImage)
