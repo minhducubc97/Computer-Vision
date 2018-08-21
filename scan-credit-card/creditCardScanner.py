@@ -26,3 +26,16 @@ FIRST_DIGIT = {
 }
 
 ###################################### MAIN ######################################
+
+# load the reference to OCR-A image from work directory, convert it to grayscale and threshold it to achieve white on black effect
+ref_ocra = cv2.imread(args["reference"])
+ref_ocra = cv2.cvtColor(ref_ocra, cv2.COLOR_BGR2GRAY)
+ref_ocra = cv2.threshold(ref_ocra, 10, 255, cv2.THRESH_BINARY_INV)[1]
+
+# extract contours from the OCR-A image, sort them from left to right 
+listOfDigits = cv2.findContours(ref_ocra.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+listOfDigits = listOfDigits[1] if imutils.is_cv3() else listOfDigits[0]
+listOfDigits = contours.sort_contours(listOfDigits, method="left-to-right")[0]
+
+# create a dictionary that maps the digit name to its appropriate ROI
+digitDict = {}
