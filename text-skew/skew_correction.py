@@ -21,8 +21,8 @@ image = cv2.imread(args["image"])
 grayImage = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 grayImageFlipped = cv2.bitwise_not(grayImage)
 
-# threshold the image, setting all text pixels to max (= 255) and set all background pixels to min (0)
-thresholdImage = cv2.threshold(grayImageFlipped, 0, 255, cv2.THRESH_BINARY)[1]
+# threshold the image, setting all text pixels to max (= 255) and set all background pixels to min (0), apply Otsu’s Binarization to reduce noise
+thresholdImage = cv2.threshold(grayImageFlipped, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
 
 cv2.imshow("Original image", image)
 cv2.imshow("Flipped image", thresholdImage)

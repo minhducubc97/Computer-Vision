@@ -39,3 +39,9 @@ listOfDigits = contours.sort_contours(listOfDigits, method="left-to-right")[0]
 
 # create a dictionary that maps the digit name to its appropriate ROI
 digitDict = {}
+for (index, contour) in enumerate(listOfDigits):
+    # extract the bounding box for the digit and resize it appropriately
+    (x, y, width, height) = cv2.boundingRect(contour)
+    roi = ref_ocra[y:y + h, x:x + w]
+    roi = cv2.resize(roi, (60, 90))
+    digitDict[index] = roi
