@@ -39,9 +39,26 @@ listOfDigits = contours.sort_contours(listOfDigits, method="left-to-right")[0]
 
 # create a dictionary that maps the digit name to its appropriate ROI
 digitDict = {}
-for (index, contour) in enumerate(listOfDigits):
+for (digit, contour) in enumerate(listOfDigits):
     # extract the bounding box for the digit and resize it appropriately
     (x, y, width, height) = cv2.boundingRect(contour)
-    roi = ref_ocra[y:y + h, x:x + w]
+    roi = ref_ocra[y:y + height, x:x + width]
     roi = cv2.resize(roi, (60, 90))
-    digitDict[index] = roi
+    digitDict[digit] = roi
+
+
+# load the input image, resize it and convert to grayscale
+image = cv2.imread(args["image"])
+resizedImage = imutils.resize(image, width=300)
+grayImage = cv2.cvtColor(resizedImage, cv2.COLOR_BGR2GRAY)
+cv2.imshow("Original image", image)
+cv2.imshow("Gray image", grayImage)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+#=== TOP-HAT TRANSFORM ===#
+# initialize a rectangular (its width > its height) kernel
+rectKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9,3))
+
+# initialize a square kernel
+sqrKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
