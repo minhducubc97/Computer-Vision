@@ -57,8 +57,22 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 #=== TOP-HAT TRANSFORM ===#
+
 # initialize a rectangular (its width > its height) kernel
 rectKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9,3))
 
 # initialize a square kernel
 sqrKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (5,5))
+
+# apply a tophat (whitehat) morphological operator to find light regions against the dark background (which should be the numbers in a typical credit card)
+tophat = cv2.morphologyEx(grayImage, cv2.MORPH_TOPHAT, rectKernel)
+cv2.imshow("Tophat image", tophat)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+# compute the Scharr gradient of the tophat image, then scale the rest back into the range [0, 255]
+gradX = cv2.Sobel(tophat, ddepth=cv2.CV_32F, dx=1, dy=0, ksize=-1)
+gradX = np.absolute(gradX)
+(minVal, maxVal) = (np.min(gradX), np.max(gradX))
+gradX = (255 * ((gradX - minVal) / (maxVal - minVal)))
+gradX = gradX.astype("uint8")
