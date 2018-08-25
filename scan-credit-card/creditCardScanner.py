@@ -52,7 +52,7 @@ for (digit, contour) in enumerate(listOfDigits):
 image = cv2.imread(args["image"])
 resizedImage = imutils.resize(image, width=300)
 grayImage = cv2.cvtColor(resizedImage, cv2.COLOR_BGR2GRAY)
-cv2.imshow("Original image", image)
+cv2.imshow("Original image", resizedImage)
 cv2.imshow("Gray image", grayImage)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
@@ -118,3 +118,62 @@ for (index, contour) in enumerate(listOfContours):
         # based on observations, the width is between 40 and 60 pixels, while the height is between 10 and 20
         if (width > 40 and width < 60) and (height > 10 and height < 20):
             listOfDigitGroups.append((x, y, width, height))
+
+# sort the digit locations from left to right
+listOfDigitGroups = sorted(listOfDigitGroups, key=lambda x:x[0])
+finalOutput = []
+
+# loop over 4 groups of digits on the credit card
+for (index, (groupX, groupY, groupWidth, groupHeight)) in enumerate(listOfDigitGroups):
+    # initialize the list of group digits
+    groupOfOutput = []
+
+    # get the ROI group of 4 digits from the grayscale image grayImage, then use thresholding to get the digits from the credit card
+    groupOfFour = grayImage[(groupY - 5) : (groupY + groupHeight + 5), (groupX - 5) : (groupX + groupWidth + 5)]
+    groupOfFour = cv2.threshold(groupOfFour, 0, 255, cv2.THRESH_BINARY+cv2.THRESH_OTSU)[1]
+
+    # detect the contours of each individual digit in the group 
+    digitContours = cv2.findContours(groupOfFour.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    digitContours = digitContours[1] if imutils.is_cv3() else digitContours[0]
+    digitContours = contours.sort_contours(digitContours, method="left-to-right")[0]
+
+    for contour in digitContours:
+        # get the bounding box of each diti on the card
+        (x, y, width, height) = cv2.boundingRect(contour)
+        roi = groupOfFour[y : (y + height), x : (x + width)]
+        roi = cv2.resize(roi, (60, 90))
+
+        # initialize a list of template matching scores, the matching with the highest score will be the correct digit.
+        scores = []
+
+        # loop over the reference digit name and digit ROI
+        for (digit, digitROI) in digitDict.items():
+            # apply correlation-based template matching, take score and update the score list
+            result = cv2.matchTemplate(roi, digitROI, cv2.TM_CCOEFF)
+            (_, score, _, _) = cv2.minMaxLoc(result)
+            scores.append(score)
+
+        # the highest score is the one
+        groupOfOutput.append(str(np.argmax(scores))) # np.argmax returns the index of the largest element
+    
+    # finish groupOfOutput
+
+    # draw the digits on top and highlight the digits on the credit card
+    cv2.rectangle(resizedImage, (groupX - 5, groupY - 5), (groupX + groupWidth + 5, groupY + groupHeight + 5), (0, 0, 255), 2)
+    cv2.putText(resizedImage, "".join(groupOfOutput), (groupX - 2, groupY - 15), cv2.FONT_HERSHEY_TRIPLEX, 0.7, (0, 255, 0), 1)
+
+    # create list of strings contains all the digits
+    finalOutput.extend(groupOfOutput)
+
+# display the output credit card information to the screen
+print("Credit Card Type: {}".format(FIRST_DIGIT[finalOutput[0]]))
+print("Credit Card Number: {}".format("".join(finalOutput)))
+
+# enlarge the image for better view
+enlargedImage = imutils.resize(resizedImage, width=500)
+cv2.imshow("Processed image", enlargedImage)
+cv2.waitKey(0)
+
+# write the output image
+outputImageDir = "./images/output" + args["image"][7:]
+cv2.imwrite(outputImageDir, resizedImage)
