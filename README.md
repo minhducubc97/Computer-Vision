@@ -9,7 +9,7 @@ Exploring computer vision with OpenCV
 ### Document scanner:
 - The application receives input as an picture of a document, taken at maximum 45 degrees skewed away from the vertical axis; it then detects the document in the picture and outputs the front-view of the document along with the readable texts on the document. The read text accuracy depends on the picture quality.
 
-<img src="https://github.com/minhducubc97/Computer-Vision/blob/master/Resources/document-scanner3.PNG" height="250">
+<img src="https://github.com/minhducubc97/Computer-Vision/blob/master/Resources/document-scanner3.PNG" height="250"/>
 
 ## Built with
 - OpenCV3
