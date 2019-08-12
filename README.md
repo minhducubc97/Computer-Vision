@@ -1,7 +1,7 @@
 # Computer-Vision
 Exploring computer vision with OpenCV
 
-### Multi-object tracking:
+### Multi-object tracker:
 - The application uses OpenCV3 built-in object trackers to track multiple objects in the given videos. If the videos are not provided, the application will automatically connect to Webcam and operate object tracking through the computer camera.
 
 <img src="https://github.com/minhducubc97/Computer-Vision/blob/master/Resources/multi-object-tracking.PNG" height="250"/>
